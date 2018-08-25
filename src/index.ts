@@ -1,4 +1,4 @@
 
 import { Main } from './Main';
 
-new Main();
+window.addEventListener('load', () => new Main());

@@ -21,25 +21,35 @@ export class Main {
         }
 
         // body
-        const bodyElement = problemState.children[1] as HTMLElement;
-        convertProblem.push(this.analyzeElement(bodyElement));
+        if (problemState.children.length > 1) {
+          const bodyElement = problemState.children[1] as HTMLElement;
+          convertProblem.push(this.analyzeElement(bodyElement));
+        }
 
         // input format
-        const inputElement = problemState.children[2] as HTMLElement;
-        convertProblem.push(this.analyzeElement(inputElement));
+        if (problemState.children.length > 2) {
+          const inputElement = problemState.children[2] as HTMLElement;
+          convertProblem.push(this.analyzeElement(inputElement));
+        }
 
         // output format
-        const outputElement = problemState.children[3] as HTMLElement;
-        convertProblem.push(this.analyzeElement(outputElement));
+        if (problemState.children.length > 3) {
+          const outputElement = problemState.children[3] as HTMLElement;
+          convertProblem.push(this.analyzeElement(outputElement));
+        }
 
         // sample (do nothing)
-        const sampleElement = problemState.children[4] as HTMLElement;
+        if (problemState.children.length > 4) {
+          const sampleElement = problemState.children[4] as HTMLElement;
+        }
 
         // note
-        const noteElement = problemState.children[5] as HTMLElement;
-        convertProblem.push(this.analyzeElement(noteElement));
+        if (problemState.children.length > 5) {
+          const noteElement = problemState.children[5] as HTMLElement;
+          convertProblem.push(this.analyzeElement(noteElement));
+        }
 
-        if (this.setCopyButton(convertProblem.join(this.NewLine))) {
+        if (this.setCopyButton(convertProblem.join(this.NewLine).split('$$$').join(''))) {
           this.putLog('Set button success!');
         } else {
           throw new Error('Set button failed...');
@@ -74,13 +84,6 @@ export class Main {
           }
           break;
         }
-        case 'script': {
-          let foo = this.analyzeElement(childNode as HTMLElement);
-          if (foo.length) {
-            result.push(foo);
-          }
-          break;
-        }
         case 'p': {
           let foo = this.analyzeElement(childNode as HTMLElement);
           if (foo.length) {
@@ -88,14 +91,65 @@ export class Main {
           }
           break;
         }
+        case 'ul': {
+          let foo = this.analyzeElement(childNode as HTMLElement);
+          if (foo.length) {
+            result.push(this.NewLine + foo + this.NewLine);
+          }
+          break;
+        }
+        case 'li': {
+          let foo = this.analyzeElement(childNode as HTMLElement);
+          if (foo.length) {
+            result.push(this.NewLine + '・' + foo + this.NewLine);
+          }
+          break;
+        }
         case 'pre': { break; }
         case 'br': { break; }
-        case 'msup': { break; }
-        case 'msub': { break; }
-        case 'math': { break; }
-        case 'mn': { break; }
-        case 'mi': { break; }
-        case 'mo': { break; }
+        case 'script': { break; }
+        case 'msup': {
+          let foo = this.analyzeElement(childNode as HTMLElement);
+          if (foo.length) {
+            result.push(foo);
+          }
+          break;
+        }
+        case 'msub': {
+          let foo = this.analyzeElement(childNode as HTMLElement);
+          if (foo.length) {
+            result.push(foo);
+          }
+          break;
+        }
+        case 'math': {
+          let foo = this.analyzeElement(childNode as HTMLElement);
+          if (foo.length) {
+            result.push(foo);
+          }
+          break;
+        }
+        case 'mn': {
+          let foo = this.analyzeElement(childNode as HTMLElement);
+          if (foo.length) {
+            result.push(foo);
+          }
+          break;
+        }
+        case 'mi': {
+          let foo = this.analyzeElement(childNode as HTMLElement);
+          if (foo.length) {
+            result.push(foo);
+          }
+          break;
+        }
+        case 'mo': {
+          let foo = this.analyzeElement(childNode as HTMLElement);
+          if (foo.length) {
+            result.push(foo);
+          }
+          break;
+        }
       }
     });
     return result.join('');
@@ -109,7 +163,7 @@ export class Main {
       copyButton.className = CopyButtonClassName;
       copyButton.addEventListener('click', () => this.textCopyToClipBoard(copyTarget));
       const ProblemStatementElement = document.getElementsByClassName(this.ProblemStatementId)[0];
-      ProblemStatementElement.insertBefore(copyButton, ProblemStatementElement.children[4]);
+      ProblemStatementElement.insertBefore(copyButton, ProblemStatementElement.children[0]);
       return true;
     } catch (err) {
       console.error(err);

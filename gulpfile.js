@@ -18,6 +18,7 @@ gulp.task(GenerateUserscriptTaskName, gulp.series(WebpackTaskName, (done) => {
   const convertedSourceOfWebpack = fs.readFileSync('./build/bundle.js', 'utf8');
   fs.writeFileSync('./build/codeforces-problem-copy-button.user.js', 
                    UserScriptHeader + '\n' + convertedSourceOfWebpack);
+  fs.unlinkSync('./build/bundle.js');
   done();
 }));
 
