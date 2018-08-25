@@ -5,6 +5,6 @@
 // @description Copy the problem sentence of current page.
 // @author      sekiya9311
 // @supportURL  https://github.com/sekiya9311/codeforces-problem-copy-button/issues
-// @include     https://codeforces.com/*
-// @include     http://codeforces.com/*
+// @include     https://codeforces.com/*/problem/*
+// @include     http://codeforces.com/*/problem/*
 // ==/UserScript==
