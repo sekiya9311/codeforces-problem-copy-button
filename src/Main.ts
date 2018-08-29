@@ -1,6 +1,7 @@
 
 export class Main {
-  private readonly ProblemStatementId : string = 'problem-statement';
+  private readonly ProblemStatementClassName: string = 'problem-statement';
+  private readonly SampleTestsClassName: string = 'sample-tests';
   private readonly NewLine: string = '\n';
 
   public constructor() {
@@ -12,7 +13,7 @@ export class Main {
   }
 
 private getProblem(): string {
-  const problemStates = document.getElementsByClassName(this.ProblemStatementId);
+  const problemStates = document.getElementsByClassName(this.ProblemStatementClassName);
   let convertProblem = new Array<string>();
   if (problemStates !== null && problemStates.length > 0) {
     try {
@@ -28,33 +29,12 @@ private getProblem(): string {
           .replace('outputstandard output', 'output: standard output'));
       }
 
-      // body
-      if (problemState.children.length > 1) {
-        const bodyElement = problemState.children[1] as HTMLElement;
-        convertProblem.push(this.analyzeElement(bodyElement));
-      }
-
-      // input format
-      if (problemState.children.length > 2) {
-        const inputElement = problemState.children[2] as HTMLElement;
-        convertProblem.push(this.analyzeElement(inputElement));
-      }
-
-      // output format
-      if (problemState.children.length > 3) {
-        const outputElement = problemState.children[3] as HTMLElement;
-        convertProblem.push(this.analyzeElement(outputElement));
-      }
-
-      // sample (do nothing)
-      if (problemState.children.length > 4) {
-        const sampleElement = problemState.children[4] as HTMLElement;
-      }
-
-      // note
-      if (problemState.children.length > 5) {
-        const noteElement = problemState.children[5] as HTMLElement;
-        convertProblem.push(this.analyzeElement(noteElement));
+      for (let i = 1; i < problemState.children.length; i++) {
+        if (problemState.children[i].className != this.SampleTestsClassName) {
+          // exclude sample-tests
+          const element = problemState.children[i] as HTMLElement;
+          convertProblem.push(this.analyzeElement(element));
+        }
       }
 
       return convertProblem.join(this.NewLine).split('$$$').join('');
@@ -149,7 +129,7 @@ private getProblem(): string {
       copyButton.innerText = 'copy problem';
       copyButton.className = CopyButtonClassName;
       copyButton.addEventListener('click', () => this.textCopyToClipBoard(this.getProblem()));
-      const ProblemStatementElement = document.getElementsByClassName(this.ProblemStatementId)[0];
+      const ProblemStatementElement = document.getElementsByClassName(this.ProblemStatementClassName)[0];
       ProblemStatementElement.parentNode.insertBefore(copyButton, ProblemStatementElement);
       return true;
     } catch (err) {
