@@ -49,7 +49,9 @@ private getProblem(): string {
 
   private analyzeElement(element: HTMLElement): string {
     let result = new Array<string>();
-    element.childNodes.forEach((childNode) => {
+    const IsParentOrderedList = element.nodeName.toLowerCase() === 'ol';
+    let prefNum = 0;
+    element.childNodes.forEach(childNode => {
       switch (childNode.nodeName.toLowerCase()) {
         case '#text': {
           result.push(childNode.nodeValue);
@@ -86,6 +88,9 @@ private getProblem(): string {
         case 'li': {
           let foo = this.analyzeElement(childNode as HTMLElement);
           if (foo.length) {
+            if (IsParentOrderedList) {
+              foo = (++prefNum).toString() + '. ' + foo;
+            }
             result.push(this.NewLine + '・' + foo + this.NewLine);
           }
           break;
@@ -117,6 +122,13 @@ private getProblem(): string {
         case 'mn': { break; }
         case 'mi': { break; }
         case 'mo': { break; }
+        case 'ol': {
+          let foo = this.analyzeElement(childNode as HTMLElement);
+          if (foo.length) {
+            result.push(foo);
+          }
+          break;
+        }
       }
     });
     return result.join('');
