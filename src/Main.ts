@@ -129,6 +129,20 @@ private getProblem(): string {
           }
           break;
         }
+        case 'i': {
+          let foo = this.analyzeElement(childNode as HTMLElement);
+          if (foo.length) {
+            result.push(foo);
+          }
+          break;
+        }
+        case 'sup': {
+          let foo = this.analyzeElement(childNode as HTMLElement);
+          if (foo.length) {
+            result.push(foo);
+          }
+          break;
+        }
       }
     });
     return result.join('');
